@@ -1,12 +1,16 @@
 # 虛擬環境
 venv/
 env/
+.venv/
 .env
 
 # Python 快取
 __pycache__/
 *.py[cod]
 *$py.class
+
+# 專案產生的資料夾
+instance/
 
 # SQLite 資料庫 (根據需求決定是否納入版控，通常不納入)
 *.sqlite

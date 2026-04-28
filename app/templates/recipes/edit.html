@@ -1,8 +1,44 @@
 {% extends "base.html" %}
 
-{% block title %}編輯食譜{% endblock %}
+{% block title %}編輯食譜 - {{ recipe.name }}{% endblock %}
 
 {% block content %}
-    <h1>編輯食譜</h1>
-    <!-- 未來這裡會實作編輯表單，並帶入原有資料 (POST 至 /recipes/<id>/edit) -->
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow border-0 mt-3">
+            <div class="card-header bg-warning text-dark p-3">
+                <h4 class="mb-0">✏️ 編輯食譜</h4>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('recipes.update_recipe', id=recipe.id) }}" method="POST">
+                    <div class="mb-4">
+                        <label for="name" class="form-label fw-bold">食譜名稱 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ recipe.name }}" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="ingredients" class="form-label fw-bold">所需食材 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="ingredients" name="ingredients" rows="4" required>{{ recipe.ingredients }}</textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="steps" class="form-label fw-bold">製作步驟 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="steps" name="steps" rows="6" required>{{ recipe.steps }}</textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="image_url" class="form-label fw-bold">圖片網址 (選填)</label>
+                        <input type="url" class="form-control" id="image_url" name="image_url" value="{{ recipe.image_url|default('', true) }}">
+                    </div>
+                    
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('recipes.recipe_detail', id=recipe.id) }}" class="btn btn-light border">取消返回</a>
+                        <button type="submit" class="btn btn-warning px-4 fw-bold">儲存更新</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

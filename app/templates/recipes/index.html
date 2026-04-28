@@ -3,7 +3,61 @@
 {% block title %}首頁 - 食譜列表{% endblock %}
 
 {% block content %}
-    <h1>食譜列表</h1>
-    <!-- 未來這裡會實作搜尋與推薦表單 -->
-    <!-- 未來這裡會實作食譜清單迴圈 (for recipe in recipes) -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>
+        {% if search_query %}
+            「{{ search_query }}」的搜尋結果
+        {% elif recommend_ingredients %}
+            推薦食譜 (基於食材: {{ recommend_ingredients }})
+        {% else %}
+            我的食譜庫
+        {% endif %}
+    </h2>
+    <a href="{{ url_for('recipes.new_recipe') }}" class="btn btn-primary">+ 新增食譜</a>
+</div>
+
+<!-- 推薦食譜功能區塊 -->
+<div class="card mb-4 shadow-sm border-0 bg-white">
+    <div class="card-body">
+        <h5 class="card-title text-success"><i class="bi bi-lightbulb"></i> 不知道做什麼？讓系統根據食材推薦！</h5>
+        <form action="{{ url_for('recipes.recommend') }}" method="GET" class="d-flex mt-3">
+            <input type="text" class="form-control me-2" name="ingredients" placeholder="輸入手上有的食材（如：雞肉, 雞蛋, 洋蔥），使用逗號分隔" value="{{ recommend_ingredients|default('') }}" required>
+            <button type="submit" class="btn btn-outline-success" style="white-space: nowrap;">開始推薦</button>
+        </form>
+    </div>
+</div>
+
+<!-- 食譜列表卡片 -->
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    {% for recipe in recipes %}
+    <div class="col">
+        <div class="card h-100 shadow-sm border-0">
+            {% if recipe.image_url %}
+            <img src="{{ recipe.image_url }}" class="card-img-top" alt="{{ recipe.name }}" style="height: 200px; object-fit: cover;">
+            {% else %}
+            <div class="card-img-top bg-secondary bg-opacity-25 d-flex align-items-center justify-content-center text-muted" style="height: 200px;">
+                <span>尚無圖片</span>
+            </div>
+            {% endif %}
+            
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title text-primary">{{ recipe.name }}</h5>
+                <p class="card-text text-truncate text-muted small">{{ recipe.ingredients }}</p>
+                <div class="mt-auto">
+                    <a href="{{ url_for('recipes.recipe_detail', id=recipe.id) }}" class="btn btn-outline-primary btn-sm w-100">查看完整食譜</a>
+                </div>
+            </div>
+            <div class="card-footer bg-white text-muted text-end border-0" style="font-size: 0.75rem;">
+                加入時間: {{ recipe.created_at[:10] }}
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="col-12 text-center my-5">
+        <h4 class="text-muted">找不到任何食譜 😢</h4>
+        <p>試著調整搜尋關鍵字，或是新增一篇食譜吧！</p>
+        <a href="{{ url_for('recipes.index') }}" class="btn btn-secondary mt-2">返回總覽</a>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}

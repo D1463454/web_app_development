@@ -1,9 +1,71 @@
 {% extends "base.html" %}
 
-{% block title %}食譜詳細內容{% endblock %}
+{% block title %}{{ recipe.name }} - 食譜詳細內容{% endblock %}
 
 {% block content %}
-    <h1>食譜詳細內容</h1>
-    <!-- 未來這裡會顯示單一食譜的所有欄位 -->
-    <!-- 未來這裡會實作編輯按鈕與刪除表單 -->
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-lg border-0 mb-5">
+            {% if recipe.image_url %}
+            <img src="{{ recipe.image_url }}" class="card-img-top" alt="{{ recipe.name }}" style="max-height: 450px; object-fit: cover;">
+            {% endif %}
+            
+            <div class="card-body p-4 p-md-5">
+                <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+                    <h1 class="card-title fw-bold text-primary mb-3 mb-md-0">{{ recipe.name }}</h1>
+                    <div class="btn-group shadow-sm">
+                        <a href="{{ url_for('recipes.edit_recipe', id=recipe.id) }}" class="btn btn-outline-warning text-dark px-4">編輯</a>
+                        <button type="button" class="btn btn-outline-danger px-4" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            刪除
+                        </button>
+                    </div>
+                </div>
+                
+                <p class="text-muted small border-bottom pb-3 mb-4">
+                    建立時間: {{ recipe.created_at }} <span class="mx-2">|</span> 最後更新: {{ recipe.updated_at }}
+                </p>
+
+                <div class="row">
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <div class="bg-light p-4 rounded h-100 border">
+                            <h4 class="text-success fw-bold mb-3 border-bottom pb-2">🛒 所需食材</h4>
+                            <div style="white-space: pre-wrap; font-size: 1.1rem; line-height: 1.6;">{{ recipe.ingredients }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="p-4 rounded h-100 border" style="background-color: #fdfdfd;">
+                            <h4 class="text-primary fw-bold mb-3 border-bottom pb-2">📖 製作步驟</h4>
+                            <div style="white-space: pre-wrap; font-size: 1.1rem; line-height: 1.8;">{{ recipe.steps }}</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-5">
+                    <a href="{{ url_for('recipes.index') }}" class="btn btn-secondary px-5 py-2">返回所有食譜</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 刪除確認 Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      <div class="modal-header bg-danger text-white border-0">
+        <h5 class="modal-title fw-bold" id="deleteModalLabel">⚠️ 確認刪除</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body py-4">
+        您確定要永久刪除「<strong class="text-danger">{{ recipe.name }}</strong>」嗎？<br>此操作無法還原，請謹慎決定。
+      </div>
+      <div class="modal-footer bg-light border-0">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+        <form action="{{ url_for('recipes.delete_recipe', id=recipe.id) }}" method="POST" class="d-inline">
+            <button type="submit" class="btn btn-danger px-4">確認刪除</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

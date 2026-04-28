@@ -3,6 +3,42 @@
 {% block title %}新增食譜{% endblock %}
 
 {% block content %}
-    <h1>新增食譜</h1>
-    <!-- 未來這裡會實作新增表單 (POST 至 /recipes) -->
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card shadow border-0 mt-3">
+            <div class="card-header bg-primary text-white p-3">
+                <h4 class="mb-0">📝 新增食譜</h4>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('recipes.create_recipe') }}" method="POST">
+                    <div class="mb-4">
+                        <label for="name" class="form-label fw-bold">食譜名稱 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ name|default('') }}" placeholder="例如：日式馬鈴薯燉肉" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="ingredients" class="form-label fw-bold">所需食材 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="ingredients" name="ingredients" rows="4" placeholder="例如：&#10;豬肉片 200g&#10;馬鈴薯 2顆&#10;洋蔥 1顆&#10;醬油 2大匙" required>{{ ingredients|default('') }}</textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="steps" class="form-label fw-bold">製作步驟 <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="steps" name="steps" rows="6" placeholder="例如：&#10;1. 馬鈴薯切塊，洋蔥切絲。&#10;2. 熱鍋下油，先炒香洋蔥。&#10;3. 加入豬肉片翻炒至變色。&#10;4. 加入馬鈴薯與醬油燉煮15分鐘。" required>{{ steps|default('') }}</textarea>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="image_url" class="form-label fw-bold">圖片網址 (選填)</label>
+                        <input type="url" class="form-control" id="image_url" name="image_url" value="{{ image_url|default('') }}" placeholder="https://example.com/image.jpg">
+                    </div>
+                    
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('recipes.index') }}" class="btn btn-light border">取消返回</a>
+                        <button type="submit" class="btn btn-primary px-4">儲存食譜</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
