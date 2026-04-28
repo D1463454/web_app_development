@@ -1,0 +1,20 @@
+# 虛擬環境
+venv/
+env/
+.env
+
+# Python 快取
+__pycache__/
+*.py[cod]
+*$py.class
+
+# SQLite 資料庫 (根據需求決定是否納入版控，通常不納入)
+*.sqlite
+*.sqlite3
+*.db
+
+# 編輯器與作業系統檔案
+.vscode/
+.idea/
+*.swp
+.DS_Store

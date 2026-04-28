@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}食譜收藏系統{% endblock %}</title>
+    <!-- 未來這裡會引入共用的 CSS -->
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="{{ url_for('recipes.index') }}">首頁</a>
+            <a href="{{ url_for('recipes.new_recipe') }}">新增食譜</a>
+        </nav>
+    </header>
+
+    <main>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <ul class="flashes">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}
+        <!-- 內容區塊 -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2026 食譜收藏系統</p>
+    </footer>
+</body>
+</html>
